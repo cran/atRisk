@@ -4,22 +4,25 @@
 \alias{f_distrib}
 \title{Distribution}
 \usage{
-f_distrib(type_function, compile_qt, starting_values)
+f_distrib(type_function, compile_qt, starting_values, tolerance = 1e-06)
 }
 \arguments{
-\item{type_function}{String argument : "gaussian" for normal distribution or "skew-t" for t-student distribution}
+\item{type_function}{String argument : "gaussian" for Normal Distribution, "skew-gaussian" for Skew-Normal Distribution or "skew-t" for t-student Distribution}
 
-\item{compile_qt}{Numeric matrix containing different quantiles and associated values}
+\item{compile_qt}{List containing the results of f_compile_quantile function}
 
 \item{starting_values}{Numeric vector with initial values for optimization}
+
+\item{tolerance}{Numeric optional for the convergence tolerance. Iteration is terminated when the absolute difference in function value between successive iteration is below tol (default value = 1.e-06).}
 }
 \value{
-a data.frame with the parameters of the distribution
+Dataframe with the parameters of the distribution for each period. This dataframe includes out of sample values of the paramateres if newdata has been specified in f_compile_quantile.
 }
 \description{
-This function is used to estimate the parameters of the distribution (mean and standard deviation for Gaussian, xi, omega, alpha, and nu for skew-t) based on the quantile regression results (Koenker and Basset, 1978). See Adrian et al. (2019) and Adrian et al. (2022) for more details on the estimation steps.
+This function is used to estimate the parameters of the distribution for each period (mean and standard deviation for Gaussian Distribution, xi, omega and alpha for Skew-Normal Distribution, and xi, omega, alpha, and nu for t-student Distribution) based on the quantile regression results (Koenker and Basset, 1978). See Adrian et al. (2019) and Adrian et al. (2022) for more details on the estimation steps.
 }
 \examples{
+\donttest{
 # Import data
 data("data_euro")
 
@@ -32,8 +35,7 @@ CISS_euro_lag_4 = data_euro["CISS"][c(1:(length(data_euro["GDP"][,1]) - 4)),]
 quantile_target <- as.vector(c(0.25,0.75))
 results_quantile_reg <- f_compile_quantile(qt_trgt=quantile_target,
 v_dep=PIB_euro_forward_4,
-v_expl=cbind(FCI_euro_lag_4, CISS_euro_lag_4),
-t_trgt = 30)
+v_expl=cbind(FCI_euro_lag_4, CISS_euro_lag_4))
 
 results_g <- f_distrib(type_function="gaussian",
 compile_qt=results_quantile_reg,
@@ -43,18 +45,20 @@ starting_values=c(0, 1))
 quantile_target <- as.vector(c(0.10,0.25,0.75,0.90))
 results_quantile_reg <- f_compile_quantile(qt_trgt=quantile_target,
 v_dep=PIB_euro_forward_4,
-v_expl=cbind(FCI_euro_lag_4, CISS_euro_lag_4),
-t_trgt = 30)
+v_expl=cbind(FCI_euro_lag_4, CISS_euro_lag_4))
 
-results_s <- f_distrib(type_function="skew-t",
+results <- f_distrib(type_function="skew-t",
 compile_qt=results_quantile_reg,
-starting_values=c(0, 1, -0.5, 1.3))
+starting_values=c(0, 0.5, 0, 2), tolerance=1e-05)
+}
 
 }
 \references{
 Adrian, Tobias, Nina Boyarchenko, and Domenico Giannone. "Vulnerable growth." American Economic Review 109.4 (2019): 1263-89.
 
-Adrian, Tobias, et al. "The term structure of growth-at-risk. " American Economic Journal: Macroeconomics 14.3 (2022): 283-323.
+Adrian, Tobias, et al. "The term structure of growth-at-risk." American Economic Journal: Macroeconomics 14.3 (2022): 283-323.
 
 Koenker, Roger, and Gilbert Bassett Jr. "Regression quantiles." Econometrica: journal of the Econometric Society (1978): 33-50.
+
+Azzalini, Adelchi. "The skew-normal and related families." Vol. 3. Cambridge University Press (2013).
 }

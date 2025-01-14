@@ -4,19 +4,21 @@
 \alias{f_compile_quantile}
 \title{Estimation of quantiles}
 \usage{
-f_compile_quantile(qt_trgt, v_dep, v_expl, t_trgt)
+f_compile_quantile(qt_trgt, v_dep, v_expl, newdata = NULL)
 }
 \arguments{
 \item{qt_trgt}{Numeric vector, dim k, of k quantiles for different qt-estimations}
 
 \item{v_dep}{Numeric vector of the dependent variable}
 
-\item{v_expl}{Numeric vector of the (k) explanatory variable(s)}
+\item{v_expl}{Numeric vector or matrix of the (k) explanatory covariate(s)}
 
-\item{t_trgt}{Numeric time target (optional)}
+\item{newdata}{Numeric optional vector of the (k) out of sample explanatory covariate(s)}
 }
 \value{
-Numeric matrix with the predicted values based on each quantile regression, at time fixed in input
+A list with the following elements:
+\item{quantile_target}{Numeric vector, dim k, of k quantiles for different qt-estimations.}
+\item{results_qt}{Numeric matrix with all the predicted values based on each quantile regression, where each column corresponds to a quantile target. This matrix includes out-of-sample values of the dependent variable if `newdata` is specified.}
 }
 \description{
 Predicted values based on each quantile regression (Koenker and Basset, 1978), at time=t_trgt, for each quantile in qt_trgt.
@@ -33,8 +35,7 @@ CISS_euro_lag_4 = data_euro["CISS"][c(1:(length(data_euro["GDP"][,1]) - 4)),]
 quantile_target <- as.vector(c(0.10,0.25,0.75,0.90))
 results_quantile_reg <- f_compile_quantile(qt_trgt=quantile_target,
 v_dep=PIB_euro_forward_4,
-v_expl=cbind(FCI_euro_lag_4, CISS_euro_lag_4),
-t_trgt = 30)
+v_expl=as.matrix(cbind(FCI_euro_lag_4, CISS_euro_lag_4)))
 
 }
 \references{

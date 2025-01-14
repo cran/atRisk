@@ -13,7 +13,7 @@ Sources :    https://sdw.ecb.europa.eu/browseExplanation.do?node=9689686    http
 }
 \usage{data("data_euro")}
 \format{
-  A data frame with 57 observations on the following 4 variables.
+  A data frame with 56 observations on the following 4 variables.
   \describe{
     \item{\code{DATE}}{Vector of dates.}
     \item{\code{GDP}}{Vector of annualized PIB.}

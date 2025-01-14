@@ -9,7 +9,7 @@ f_VaR(alpha, type_function, params)
 \arguments{
 \item{alpha}{Numeric argument for Expected-Shortfall, between 0 and 1}
 
-\item{type_function}{String argument : "gaussian" for normal distribution or "skew-t" for t-student distribution}
+\item{type_function}{String argument : "gaussian" for Normal Distribution, "skew-gaussian" for Skew-Normal Distribution or "skew-t" for T-student Distribution}
 
 \item{params}{Numeric vector containing parameters of the distribution}
 }

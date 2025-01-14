@@ -9,7 +9,7 @@ f_ES(alpha, type_function, params, accuracy = 0.005)
 \arguments{
 \item{alpha}{Numeric argument for Expected-Shortfall, between 0 and 1}
 
-\item{type_function}{String argument : "gaussian" for normal distribution or "skew-t" for t-student distribution}
+\item{type_function}{String argument : "gaussian" for normal distribution, "skew-gaussian" for Skew-Normal Distribution or "skew-t" for t-student distribution}
 
 \item{params}{Numeric vector containing parameters of the distribution}
 
@@ -19,12 +19,12 @@ f_ES(alpha, type_function, params, accuracy = 0.005)
 Numeric value for the expected-shortfall given the distribution and the alpha risk.
 }
 \description{
-The function allows to calculate Expected-shortfall for a given distribution. It takes as parameters alpha (risk level), a distribution and the parameters associated with this distribution. For example, for a normal distribution, the user must enter the mean and the standard deviation. Currently, the function can calculate the Expected-shortfall for the normal distribution and for the skew-t distribution (Azzalini and Capitianio, 2003)
+The function allows to calculate Expected-shortfall for a given distribution. It takes as parameters alpha (risk level), a distribution and the parameters associated with this distribution. For example, for a normal distribution, the user must enter the mean and the standard deviation. Currently, the function can calculate the Expected-shortfall for the normal distribution, the skew-normal distribution and for the skew-t distribution (Azzalini and Capitianio, 2003)
 }
 \examples{
 f_ES(0.95, "gaussian", params=c(0,1))
 f_ES(0.95, "gaussian", params=c(0,1), accuracy=1e-05)
-f_ES(0.9999, "gaussian", params=c(0,1), accuracy=1e-04)
+f_ES(0.95, "gaussian", params=c(0,1), accuracy=1e-04)
 
 }
 \references{
